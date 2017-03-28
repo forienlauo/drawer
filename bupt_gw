@@ -1,0 +1,42 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import sys
+import urllib
+import urllib2
+
+
+def offline(argv):
+    url = 'http://10.3.8.211/F.htm'
+    response = urllib2.urlopen(url)
+    print response.getcode()
+    sys.exit(0)
+
+
+def online(argv):
+    if len(argv) >= 1:
+        url = 'http://gw.bupt.edu.cn'
+        data = {}
+        data['DDDDD'] = argv[0]
+        if len(argv[1:]) >= 1:
+            data['upass'] = argv[1]
+        else:
+            data['upass'] = raw_input('please input password: ')
+        data['0MKKey'] = ''
+        data = urllib.urlencode(data)
+        response = urllib2.urlopen(url, data)
+        print response.getcode()
+        sys.exit(0)
+    print 'need args: online <username> <password>'
+    sys.exit(1)
+
+
+if __name__ == '__main__':
+    argv = sys.argv
+    if len(argv) >= 1 + 1:
+        if argv[1] == 'online':
+            online(argv[2:])
+        elif argv[1] == 'offline':
+            offline(argv[2:])
+        sys.exit(0)
+    print 'need args: <online|offline>'
+    sys.exit(1)
